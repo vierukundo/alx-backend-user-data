@@ -30,3 +30,9 @@ def stats() -> str:
 def unauthorized_request():
     """Abort if 401 status code"""
     return abort(401)
+
+
+@app_views.route('/forbidden', methods=['GET'], strict_slashes=False)
+def forbidden():
+    """Abort if 403 status code for forbidden resource"""
+    return abort(403)
