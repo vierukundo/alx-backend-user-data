@@ -50,10 +50,10 @@ class DB:
             raise InvalidRequestError()
         return user
 
-    def update_user(self, user_id: int, **kwargs):
+    def update_user(self, user_id: int, **kwargs: Dict[str, str]):
         """locates user based on user id and update its attributes"""
         user = self.find_user_by(id=user_id)
-        for attr_name, attr_value in kwargs.items():
-            if not hasattr(User, attr_name):
+        for key, value in kwargs.items():
+            if not hasattr(User, key):
                 raise ValueError()
-            setattr(user, attr_name, attr_value)
+            setattr(user, key, value)
