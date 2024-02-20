@@ -53,9 +53,7 @@ class DB:
     def update_user(self, user_id: int, **kwargs):
         """locates user based on user id and update its attributes"""
         user = self.find_user_by(id=user_id)
-        if user:
-            for attr_name, attr_value in kwargs.items():
-                if not hasattr(User, attr_name):
-                    raise ValueError()
-                setattr(user, attr_name, attr_value)
-        return None
+        for attr_name, attr_value in kwargs.items():
+            if not hasattr(User, attr_name):
+                raise ValueError()
+            setattr(user, attr_name, attr_value)
