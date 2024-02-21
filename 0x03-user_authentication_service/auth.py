@@ -94,4 +94,4 @@ class Auth:
             raise ValueError()
         hashed_password = _hash_password(password)
         data = {"reset_token": None, "hashed_password": hashed_password}
-        self._db.update_user(user.id, data)
+        self._db.update_user(user.id, **data)
