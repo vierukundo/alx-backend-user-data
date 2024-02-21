@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """Flask app module"""
-from flask import Flask, request, jsonify, make_response, abort
+from flask import Flask, request, jsonify, make_response, abort, redirect
 from auth import Auth
 
 
@@ -47,7 +47,7 @@ def login():
 
 
 @app.route("/sessions", methods=["DELETE"], strict_slashes=False)
-def logout() -> None:
+def logout() -> str:
     """Handle a DELETE request to log out a user."""
     user = None
     session_id = request.cookies.get("session_id")
