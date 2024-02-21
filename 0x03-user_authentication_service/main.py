@@ -14,12 +14,13 @@ def register_user(email: str, password: str) -> None:
     payload = {"email": email, "message": "user created"}
     assert res.json() == payload
 
+
 def log_in_wrong_password(email: str, password: str) -> None:
     """Integration test for login with wrong password."""
     credentials = {"email": email, "password": password}
     res = requests.post('http://localhost:5000/sessions', data=credentials)
-    print(res.status_code, res.text)
     assert res.status_code == 401
+
 
 def log_in(email: str, password: str) -> str:
     """Integration test for successful login."""
@@ -29,10 +30,12 @@ def log_in(email: str, password: str) -> str:
     if res.status_code == 200:
         return res.cookies.get('session_id')
 
+
 def profile_unlogged() -> None:
     """Integration test for accessing profile without logging in."""
     res = requests.get('http://localhost:5000/profile')
     assert res.status_code == 403
+
 
 def profile_logged(session_id: str) -> None:
     """Integration test for accessing profile after logging in."""
@@ -41,13 +44,16 @@ def profile_logged(session_id: str) -> None:
     res = requests.get('http://localhost:5000/profile', cookies=cookies)
     assert res.status_code == 200
 
+
 def log_out(session_id: str) -> None:
     """Integration test for logging out a user."""
-    headers = {"Cookie": "session_id={}".format(session_id)}
-    res = requests.delete('http://localhost:5000/sessions', headers=headers, allow_redirects=True)
-    print(res.status_code)
-    print(res.json())
+    cookies = dict(session_id='{}'.format(session_id))
+    # headers = {"Cookie": "session_id={}".format(session_id)}
+    res = requests.delete(
+            'http://localhost:5000/sessions',
+            cookies=cookies, allow_redirects=True)
     assert res.json() == {"message": "Bienvenue"}
+
 
 def reset_password_token(email: str) -> str:
     """Integration test for obtaining a password reset token."""
@@ -56,9 +62,14 @@ def reset_password_token(email: str) -> str:
     assert res.status_code == 200
     return res.json().get('reset_token')
 
+
 def update_password(email: str, reset_token: str, new_password: str) -> None:
     """Integration test for updating the password using a reset token."""
-    data = {"email": email, "new_password": new_password, "reset_token": reset_token}
+    data = {
+            "email": email,
+            "reset_token": reset_token,
+            "new_password": new_password
+            }
     res = requests.put('http://localhost:5000/reset_password', data=data)
     payload = {"email": email, "message": "Password updated"}
     assert res.json() == payload
@@ -67,6 +78,7 @@ def update_password(email: str, reset_token: str, new_password: str) -> None:
 EMAIL = "guillaume@holberton.io"
 PASSWD = "b4l0u"
 NEW_PASSWD = "t4rt1fl3tt3"
+
 
 if __name__ == "__main__":
     # Execute the integration tests in sequence
