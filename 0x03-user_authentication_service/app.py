@@ -69,7 +69,7 @@ def profile() -> str:
 
 
 @app.route(
-        "/get_reset_password_token",
+        "/reset_password",
         methods=["GET"], strict_slashes=False)
 def get_reset_password_token():
     """Extract email from form data"""
